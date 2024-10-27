@@ -1,0 +1,15 @@
+---
+Checks: >
+  cppcoreguidelines-*,
+  clang-analyzer-*,
+  bugprone-*,
+  concurrency-*,
+  performance-*,
+  portability-*,
+  readability-*,
+  modernize-*,
+  misc-*,
+# don't use tabs for indentation, use spaces...
+# I've wasted too much time on this
+
+WarningsAsErrors: ''
