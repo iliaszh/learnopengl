@@ -31,6 +31,7 @@ target_link_libraries(
 target_include_directories(
         game
         PRIVATE
+        include
         deps/glfw/include
         deps/glad/include
 )
