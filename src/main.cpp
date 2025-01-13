@@ -33,9 +33,8 @@ auto main() -> int {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	GLFWwindow* window = glfwCreateWindow(
-		screen_width, screen_height,
-		"learnopengl", nullptr, nullptr
-		);
+		screen_width, screen_height, "learnopengl", nullptr, nullptr
+	);
 
 	if (window == nullptr) {
 		std::cerr << "Failed to create a GLFW window.\n";
@@ -56,17 +55,21 @@ auto main() -> int {
 	}
 
 	constexpr auto framebuffer_size_callback =
-		[](GLFWwindow* /*window*/,
-		   const int width, const int height) -> void {
+		[](GLFWwindow* /*window*/, const int width,
+		   const int height) -> void {
 		glViewport(0, 0, width, height);
 	};
 
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
 	try {
-		render_loop(window);
+		const auto code = render_loop(window);
+
+		return code;
 	} catch (const std::exception& e) {
 		std::cerr << "Error: " << e.what() << "\n";
+
+		return -1;
 	}
 }
 
@@ -80,27 +83,27 @@ auto render_loop(GLFWwindow* window) -> int {
 	// - vertex buffer objects associated with vertex attributes by calls
 	// to glVertexAttribPointer.
 
-	constexpr std::array vertices = { +0.5F, +0.5F, +0.0F,
-	                                  -0.5F, +0.5F, +0.0F,
-	                                  -0.5F, -0.5F, +0.0F };
+	constexpr std::array vertices = { +0.5F, +0.5F, +0.0F, -0.5F, +0.5F,
+					  +0.0F, -0.5F, -0.5F, +0.0F };
+
 	GLuint vbo{}; // vertex buffer object
 	glGenBuffers(1 /* number of buffers */, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER,
-	             sizeof(vertices), vertices.data(),
-	             GL_STATIC_DRAW);
+	glBufferData(
+		GL_ARRAY_BUFFER, sizeof(vertices), vertices.data(),
+		GL_STATIC_DRAW
+	);
 
-	glVertexAttribPointer(0 /* location from vs */,
-	                      3 /* bytes per vertex */,
-	                      GL_FLOAT,
-	                      GL_FALSE,
-	                      3 * sizeof(float) /* space between vertices */,
-	                      nullptr /* position data location */);
+	glVertexAttribPointer(
+		0 /* location from vs */, 3 /* bytes per vertex */, GL_FLOAT,
+		GL_FALSE, 3 * sizeof(float) /* space between vertices */,
+		nullptr /* position data location */
+	);
 	glEnableVertexAttribArray(0 /* location from vs */);
 
 	const ShaderProgram shader_program(
-		"../shaders/vertex.glsl",
-		"../shaders/fragment.glsl");
+		"../shaders/vertex.glsl", "../shaders/fragment.glsl"
+	);
 	shader_program.use();
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -113,10 +116,7 @@ auto render_loop(GLFWwindow* window) -> int {
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		glBindVertexArray(vao);
-		glDrawArrays(
-			GL_TRIANGLES,
-			0,
-			3);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
