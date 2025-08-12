@@ -11,7 +11,8 @@
 
 class ShaderProgram {
     public:
-	ShaderProgram(const char* vsPath, const char* fsPath) {
+	ShaderProgram(const char* vsPath, const char* fsPath)
+	    : program_id(glCreateProgram()) {
 		const auto  vsSource	= load_source(vsPath);
 		const auto* vsSourceStr = vsSource.c_str();
 
@@ -24,7 +25,6 @@ class ShaderProgram {
 		const auto fragmentShader =
 			compile_shader(fsSourceStr, GL_FRAGMENT_SHADER);
 
-		program_id = glCreateProgram();
 		glAttachShader(program_id, vertexShader);
 		glAttachShader(program_id, fragmentShader);
 
@@ -74,6 +74,7 @@ class ShaderProgram {
 
 		glUniform1f(uniform_id, value);
 	}
+
     private:
 	constexpr static auto MAX_LOG_SIZE_BYTES = 512;
 

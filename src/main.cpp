@@ -15,9 +15,9 @@ auto process_input(GLFWwindow* window) -> void {
 
 	glfwSetWindowShouldClose(window, GLFW_TRUE);
 }
-} // namespace
 
 auto render_loop(GLFWwindow* window) -> int;
+} // namespace
 
 auto main() -> int {
 	if (glfwInit() == 0) {
@@ -73,6 +73,7 @@ auto main() -> int {
 	}
 }
 
+namespace {
 auto render_loop(GLFWwindow* window) -> int {
 	GLuint vao{};
 	glGenVertexArrays(1, &vao);
@@ -126,3 +127,4 @@ auto render_loop(GLFWwindow* window) -> int {
 
 	return 0;
 }
+} // namespace
