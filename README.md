@@ -2,6 +2,14 @@
 
 This code is based on material from https://learnopengl.com/.
 
+GLFW is a submodule of this repository. Use
+
+```sh
+git clone --recurse-submodules <url>
+```
+
+to clone.
+
 ## Build dependencies
 
 On Fedora, install these dependencies:
